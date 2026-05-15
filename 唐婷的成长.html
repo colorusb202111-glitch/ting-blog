@@ -1,0 +1,928 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>唐婷的成长</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #FAF9F7;
+    --text: #1a2d42;
+    --accent: #C4A77D;
+    --accent2: #8B7355;
+    --muted: #8B7355;
+    --card: #fff;
+    --border: #E8E4DF;
+    --font-heading: 'Noto Serif SC', Georgia, serif;
+    --font-body: 'Noto Sans SC', -apple-system, sans-serif;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    font-family: var(--font-body);
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    transition: background 0.3s, color 0.3s;
+  }
+  /* ===== HEADER ===== */
+  header {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(250,249,247,0.96);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+  .header-inner {
+    max-width: 900px; margin: 0 auto;
+    padding: 0 20px; height: 60px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .brand {
+    display: flex; align-items: center; gap: 10px;
+    text-decoration: none;
+  }
+  .brand-avatar {
+    width: 38px; height: 38px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    display: flex; align-items: center; justify-content: center;
+    color: #fff; font-weight: 700; font-size: 16px;
+    font-family: var(--font-heading);
+  }
+  .brand-text .title {
+    font-family: var(--font-heading);
+    font-size: 18px; font-weight: 700; color: var(--text);
+    letter-spacing: 2px;
+  }
+  .brand-text .subtitle {
+    font-size: 11px; color: var(--muted); letter-spacing: 1px;
+  }
+  nav { display: flex; gap: 4px; align-items: center; }
+  nav a, nav button {
+    padding: 6px 14px; border-radius: 8px;
+    font-size: 14px; font-weight: 500;
+    text-decoration: none; color: var(--muted);
+    background: none; border: none; cursor: pointer;
+    transition: all 0.2s;
+  }
+  nav a:hover, nav a.active, nav button:hover {
+    color: var(--accent); background: rgba(196,167,125,0.1);
+  }
+  nav a.active { font-weight: 600; }
+
+  /* ===== MAIN ===== */
+  main { max-width: 900px; margin: 0 auto; padding: 30px 20px 60px; }
+
+  /* ===== HERO ===== */
+  .hero {
+    text-align: center; padding: 50px 20px 40px;
+  }
+  .hero h1 {
+    font-family: var(--font-heading);
+    font-size: 36px; font-weight: 700;
+    background: linear-gradient(135deg, var(--text), var(--accent2));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    margin-bottom: 12px;
+  }
+  .hero p {
+    font-size: 15px; color: var(--muted); line-height: 1.8;
+    max-width: 500px; margin: 0 auto;
+  }
+  .hero-stats {
+    display: flex; justify-content: center; gap: 40px;
+    margin-top: 28px;
+  }
+  .stat { text-align: center; }
+  .stat-num {
+    font-family: var(--font-heading);
+    font-size: 28px; font-weight: 700; color: var(--accent);
+  }
+  .stat-label { font-size: 12px; color: var(--muted); margin-top: 4px; }
+
+  /* ===== SECTIONS ===== */
+  .section-title {
+    font-family: var(--font-heading);
+    font-size: 20px; font-weight: 700;
+    margin-bottom: 20px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .section-title::after {
+    content: ''; flex: 1; height: 1px;
+    background: linear-gradient(90deg, var(--border), transparent);
+  }
+
+  /* ===== CARDS (BOOK STYLE) ===== */
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 24px;
+  }
+  .card {
+    cursor: pointer; text-decoration: none; color: inherit;
+    display: flex; flex-direction: column; align-items: center;
+    transition: transform 0.3s;
+  }
+  .card:hover { transform: translateY(-4px); }
+  .book-cover {
+    position: relative; width: 100%;
+    aspect-ratio: 2/3; border-radius: 6px;
+    overflow: hidden;
+    box-shadow: 0 8px 24px rgba(26,45,66,0.15), 0 2px 6px rgba(0,0,0,0.1);
+    transition: box-shadow 0.3s;
+  }
+  .card:hover .book-cover {
+    box-shadow: 0 16px 40px rgba(26,45,66,0.2), 0 4px 12px rgba(0,0,0,0.12);
+  }
+  .book-spine {
+    position: absolute; left: 0; top: 0; bottom: 0; width: 10%;
+    background: linear-gradient(90deg, var(--accent2), #5A4A35);
+    border-radius: 6px 0 0 6px;
+  }
+  .book-img {
+    position: absolute; left: 4%; top: 0; right: 0; bottom: 0;
+    background: linear-gradient(180deg, #E8DFD4, #D4C8B8);
+    display: flex; align-items: center; justify-content: center;
+    padding: 16px;
+    text-align: center;
+  }
+  .book-img img { width: 100%; height: 100%; object-fit: cover; }
+  .book-title-text {
+    font-family: var(--font-heading);
+    font-size: 14px; font-weight: 600; color: var(--text);
+    line-height: 1.5;
+  }
+  .book-badge {
+    position: absolute; bottom: 8px; right: 8px;
+    padding: 3px 8px; border-radius: 4px;
+    font-size: 10px; font-weight: 500;
+    background: rgba(26,45,66,0.8); color: #F5F0E8;
+  }
+  .book-badge.video { background: rgba(180,60,60,0.85); }
+  .card-title {
+    margin-top: 12px; font-size: 13px; font-weight: 600;
+    text-align: center; line-height: 1.5;
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .card-meta {
+    margin-top: 4px; font-size: 11px; color: var(--muted);
+  }
+
+  /* ===== ARTICLE LIST ===== */
+  .article-list { display: flex; flex-direction: column; gap: 16px; }
+  .article-item {
+    display: flex; gap: 16px; padding: 16px;
+    background: var(--card); border-radius: 12px;
+    border: 1px solid var(--border);
+    cursor: pointer; transition: all 0.2s;
+  }
+  .article-item:hover {
+    box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+    border-color: var(--accent);
+  }
+  .article-thumb {
+    width: 100px; height: 75px; border-radius: 8px;
+    background: linear-gradient(135deg, #E8DFD4, #C9BDA8);
+    flex-shrink: 0; overflow: hidden;
+  }
+  .article-thumb img { width: 100%; height: 100%; object-fit: cover; }
+  .article-info { flex: 1; min-width: 0; }
+  .article-info h3 {
+    font-size: 15px; font-weight: 600; margin-bottom: 6px;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .article-info p {
+    font-size: 13px; color: var(--muted); line-height: 1.6;
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .article-tags {
+    display: flex; gap: 6px; margin-top: 8px;
+  }
+  .tag {
+    padding: 2px 8px; border-radius: 4px;
+    font-size: 11px; background: rgba(196,167,125,0.12);
+    color: var(--accent2);
+  }
+
+  /* ===== EDITOR PANEL ===== */
+  .editor-bar {
+    position: fixed; bottom: 20px; right: 20px; z-index: 200;
+    display: flex; gap: 8px;
+  }
+  .fab {
+    width: 52px; height: 52px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    color: #fff; border: none; font-size: 22px;
+    cursor: pointer; box-shadow: 0 4px 16px rgba(196,167,125,0.4);
+    transition: all 0.2s; display: flex; align-items: center; justify-content: center;
+  }
+  .fab:hover { transform: scale(1.08); }
+
+  /* ===== MODAL ===== */
+  .modal-overlay {
+    position: fixed; inset: 0; z-index: 300;
+    background: rgba(0,0,0,0.4);
+    display: none; align-items: center; justify-content: center;
+    backdrop-filter: blur(4px);
+  }
+  .modal-overlay.show { display: flex; }
+  .modal {
+    background: var(--card); border-radius: 16px;
+    width: 90%; max-width: 560px; max-height: 85vh;
+    overflow: hidden; display: flex; flex-direction: column;
+    box-shadow: 0 24px 60px rgba(0,0,0,0.2);
+  }
+  .modal-header {
+    padding: 20px 24px; border-bottom: 1px solid var(--border);
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .modal-header h3 { font-family: var(--font-heading); font-size: 18px; }
+  .modal-close {
+    width: 32px; height: 32px; border-radius: 8px;
+    border: none; background: var(--bg); cursor: pointer;
+    font-size: 18px; color: var(--muted);
+  }
+  .modal-body { padding: 20px 24px; overflow-y: auto; flex: 1; }
+  .form-group { margin-bottom: 16px; }
+  .form-group label {
+    display: block; font-size: 13px; font-weight: 500;
+    margin-bottom: 6px; color: var(--muted);
+  }
+  .form-group input, .form-group textarea, .form-group select {
+    width: 100%; padding: 10px 14px;
+    border: 1px solid var(--border); border-radius: 10px;
+    font-size: 14px; background: var(--bg); color: var(--text);
+    outline: none; transition: border-color 0.2s;
+    font-family: var(--font-body);
+  }
+  .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
+    border-color: var(--accent);
+  }
+  .form-group textarea { resize: vertical; min-height: 100px; }
+  .btn-primary {
+    padding: 10px 24px; border-radius: 10px; border: none;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    color: #fff; font-size: 14px; font-weight: 600; cursor: pointer;
+    transition: opacity 0.2s;
+  }
+  .btn-primary:hover { opacity: 0.9; }
+
+  /* ===== CUSTOMIZE PANEL ===== */
+  .customize-section { margin-bottom: 20px; }
+  .customize-section h4 {
+    font-size: 13px; font-weight: 600; color: var(--muted);
+    margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px;
+  }
+  .color-options, .font-options, .layout-options {
+    display: flex; gap: 8px; flex-wrap: wrap;
+  }
+  .color-dot {
+    width: 32px; height: 32px; border-radius: 50%;
+    cursor: pointer; border: 3px solid transparent;
+    transition: all 0.2s;
+  }
+  .color-dot:hover { transform: scale(1.1); }
+  .color-dot.active { border-color: var(--text); }
+  .font-option {
+    padding: 6px 14px; border-radius: 8px;
+    border: 1px solid var(--border); cursor: pointer;
+    font-size: 13px; transition: all 0.2s;
+  }
+  .font-option:hover, .font-option.active {
+    border-color: var(--accent); background: rgba(196,167,125,0.08);
+  }
+  .layout-option {
+    padding: 8px 16px; border-radius: 8px;
+    border: 1px solid var(--border); cursor: pointer;
+    font-size: 13px; transition: all 0.2s;
+  }
+  .layout-option:hover, .layout-option.active {
+    border-color: var(--accent); background: rgba(196,167,125,0.08);
+  }
+
+  /* ===== CONTENT VIEW ===== */
+  .content-view {
+    background: var(--card); border-radius: 16px;
+    border: 1px solid var(--border); overflow: hidden;
+  }
+  .content-view-header {
+    padding: 30px 30px 20px;
+    border-bottom: 1px solid var(--border);
+  }
+  .content-view-header h1 {
+    font-family: var(--font-heading);
+    font-size: 26px; font-weight: 700; margin-bottom: 12px;
+  }
+  .content-view-header .meta {
+    display: flex; gap: 16px; font-size: 13px; color: var(--muted);
+  }
+  .content-view-body {
+    padding: 30px;
+    font-size: 16px; line-height: 1.9;
+  }
+  .content-view-body p { margin-bottom: 16px; }
+  .content-view-body img {
+    max-width: 100%; border-radius: 8px; margin: 16px 0;
+  }
+  .content-view-body h2 {
+    font-family: var(--font-heading);
+    font-size: 20px; margin: 28px 0 12px;
+  }
+
+  /* ===== VIDEO PLAYER ===== */
+  .video-player {
+    width: 100%; aspect-ratio: 16/9;
+    background: #1a1a2e; border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    color: #fff; font-size: 48px;
+  }
+
+  /* ===== TABS ===== */
+  .tabs { display: flex; gap: 4px; margin-bottom: 24px; }
+  .tab {
+    padding: 8px 18px; border-radius: 8px;
+    font-size: 14px; cursor: pointer; border: none; background: none;
+    color: var(--muted); transition: all 0.2s;
+  }
+  .tab.active {
+    background: rgba(196,167,125,0.15); color: var(--accent2);
+    font-weight: 600;
+  }
+
+  /* ===== RESPONSIVE ===== */
+  @media (max-width: 640px) {
+    .hero h1 { font-size: 26px; }
+    .card-grid { grid-template-columns: repeat(2, 1fr); gap: 16px; }
+    .article-item { flex-direction: column; }
+    .article-thumb { width: 100%; height: 160px; }
+    .editor-bar { bottom: 12px; right: 12px; }
+  }
+
+  /* ===== ANIMATIONS ===== */
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .animate-in { animation: fadeIn 0.4s ease; }
+
+  /* ===== HIDDEN ===== */
+  .hidden { display: none !important; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <a href="#" class="brand" onclick="showPage('home'); return false;">
+      <div class="brand-avatar">婷</div>
+      <div class="brand-text">
+        <div class="title">唐婷的成长</div>
+        <div class="subtitle">记录 · 思考 · 成长</div>
+      </div>
+    </a>
+    <nav>
+      <a href="#" class="active" onclick="showPage('home'); return false;" id="nav-home">首页</a>
+      <a href="#" onclick="showPage('articles'); return false;" id="nav-articles">文章</a>
+      <a href="#" onclick="showPage('videos'); return false;" id="nav-videos">视频</a>
+      <button onclick="openModal('customize')" title="自定义版面">⚙️</button>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+  <!-- HOME PAGE -->
+  <div id="page-home">
+    <div class="hero">
+      <h1>唐婷的成长</h1>
+      <p>在这里记录学习、工作、生活的点滴。每一篇文章都是成长的脚印，每一个视频都是思考的结晶。</p>
+      <div class="hero-stats">
+        <div class="stat"><div class="stat-num" id="stat-articles">0</div><div class="stat-label">篇文章</div></div>
+        <div class="stat"><div class="stat-num" id="stat-videos">0</div><div class="stat-label">个视频</div></div>
+        <div class="stat"><div class="stat-num" id="stat-days">0</div><div class="stat-label">天记录</div></div>
+      </div>
+    </div>
+
+    <div style="margin-bottom: 8px;">
+      <div class="section-title">最新文章</div>
+    </div>
+    <div class="card-grid" id="home-articles"></div>
+
+    <div style="margin: 40px 0 8px;">
+      <div class="section-title">最新视频</div>
+    </div>
+    <div class="card-grid" id="home-videos"></div>
+  </div>
+
+  <!-- ARTICLES PAGE -->
+  <div id="page-articles" class="hidden">
+    <div class="tabs">
+      <button class="tab active" onclick="filterContent('all')">全部</button>
+      <button class="tab" onclick="filterContent('work')">工作</button>
+      <button class="tab" onclick="filterContent('life')">生活</button>
+      <button class="tab" onclick="filterContent('growth')">成长</button>
+    </div>
+    <div class="article-list" id="articles-list"></div>
+  </div>
+
+  <!-- VIDEOS PAGE -->
+  <div id="page-videos" class="hidden">
+    <div class="tabs">
+      <button class="tab active" onclick="filterVideos('all')">全部</button>
+      <button class="tab" onclick="filterVideos('tutorial')">教程</button>
+      <button class="tab" onclick="filterVideos('vlog')">Vlog</button>
+      <button class="tab" onclick="filterVideos('share')">分享</button>
+    </div>
+    <div class="card-grid" id="videos-grid"></div>
+  </div>
+
+  <!-- CONTENT VIEW PAGE -->
+  <div id="page-content" class="hidden">
+    <div class="content-view">
+      <div class="content-view-header">
+        <h1 id="cv-title">标题</h1>
+        <div class="meta">
+          <span id="cv-date">2024-01-01</span>
+          <span id="cv-category">分类</span>
+          <span id="cv-type">文章</span>
+        </div>
+      </div>
+      <div class="content-view-body" id="cv-body">
+        <!-- content -->
+      </div>
+    </div>
+    <div style="margin-top: 20px; text-align: center;">
+      <button class="btn-primary" onclick="goBack()">← 返回</button>
+    </div>
+  </div>
+</main>
+
+<!-- FLOATING ACTION BUTTONS -->
+<div class="editor-bar">
+  <button class="fab" onclick="openModal('add')" title="发布内容">+</button>
+</div>
+
+<!-- ADD CONTENT MODAL -->
+<div class="modal-overlay" id="modal-add">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>发布新内容</h3>
+      <button class="modal-close" onclick="closeModal('add')">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label>类型</label>
+        <select id="add-type">
+          <option value="article">文章</option>
+          <option value="video">视频</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>标题</label>
+        <input type="text" id="add-title" placeholder="输入标题...">
+      </div>
+      <div class="form-group">
+        <label>分类</label>
+        <select id="add-category">
+          <option value="work">工作</option>
+          <option value="life">生活</option>
+          <option value="growth">成长</option>
+          <option value="tutorial">教程</option>
+          <option value="vlog">Vlog</option>
+          <option value="share">分享</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>封面图 URL（可选）</label>
+        <input type="text" id="add-cover" placeholder="https://...">
+      </div>
+      <div class="form-group">
+        <label>内容</label>
+        <textarea id="add-body" placeholder="输入内容，支持 Markdown..."></textarea>
+      </div>
+      <div class="form-group" id="add-video-url-group" style="display:none;">
+        <label>视频 URL</label>
+        <input type="text" id="add-video-url" placeholder="https://...">
+      </div>
+      <button class="btn-primary" onclick="submitContent()">发布</button>
+    </div>
+  </div>
+</div>
+
+<!-- CUSTOMIZE MODAL -->
+<div class="modal-overlay" id="modal-customize">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>自定义版面</h3>
+      <button class="modal-close" onclick="closeModal('customize')">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="customize-section">
+        <h4>主题色</h4>
+        <div class="color-options">
+          <div class="color-dot active" style="background: #C4A77D;" onclick="setTheme('warm')" title="暖金"></div>
+          <div class="color-dot" style="background: #5B8DB8;" onclick="setTheme('cool')" title="冷蓝"></div>
+          <div class="color-dot" style="background: #8B5A6B;" onclick="setTheme('rose')" title="玫瑰"></div>
+          <div class="color-dot" style="background: #5A8B6A;" onclick="setTheme('forest')" title="森林"></div>
+          <div class="color-dot" style="background: #6B5A8B;" onclick="setTheme('lavender')" title="薰衣草"></div>
+        </div>
+      </div>
+      <div class="customize-section">
+        <h4>字体</h4>
+        <div class="font-options">
+          <div class="font-option active" onclick="setFont('serif')">宋体风格</div>
+          <div class="font-option" onclick="setFont('sans')">黑体风格</div>
+          <div class="font-option" onclick="setFont('mix')">混搭风格</div>
+        </div>
+      </div>
+      <div class="customize-section">
+        <h4>排版密度</h4>
+        <div class="layout-options">
+          <div class="layout-option active" onclick="setDensity('compact')">紧凑</div>
+          <div class="layout-option" onclick="setDensity('normal')">标准</div>
+          <div class="layout-option" onclick="setDensity('loose')">宽松</div>
+        </div>
+      </div>
+      <div class="customize-section">
+        <h4>卡片样式</h4>
+        <div class="layout-options">
+          <div class="layout-option active" onclick="setCardStyle('book')">书籍封面</div>
+          <div class="layout-option" onclick="setCardStyle('card')">标准卡片</div>
+          <div class="layout-option" onclick="setCardStyle('minimal')">极简</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ===== DATA =====
+let contents = JSON.parse(localStorage.getItem('ting_contents')) || [
+  {
+    id: 1, type: 'article', title: '初识 Type-C USB 存储的世界',
+    category: 'work', date: '2024-03-15',
+    cover: '',
+    body: '在这个数字化时代，数据存储已经成为我们日常生活中不可或缺的一部分。从最早的软盘到如今的 Type-C USB 闪存盘，存储技术经历了翻天覆地的变化。\n\n作为一名从事电子产品行业多年的从业者，我见证了存储行业的起起落落。今天想和大家分享一些关于 Type-C USB 存储的心得体会。\n\n## 为什么选择 Type-C？\n\nType-C 接口的普及是时代的选择。它不仅支持正反插拔，更重要的是其强大的兼容性和传输速度。对于现代用户来说，一个接口搞定所有设备，这才是真正的便利。'
+  },
+  {
+    id: 2, type: 'article', title: '深圳创业十年的感悟',
+    category: 'growth', date: '2024-02-20',
+    cover: '',
+    body: '十年前，我怀揣着梦想来到深圳。这座城市的节奏很快，机会很多，竞争也很激烈。\n\n回顾这十年的创业历程，有成功的喜悦，也有失败的教训。最重要的是，我学会了在变化中寻找机会，在困难中保持韧性。\n\n## 三个关键认知\n\n1. **顺势而为**：选择比努力更重要，要站在风口上。\n2. **持续学习**：市场变化太快，不进则退。\n3. **团队至上**：一个人的力量有限，优秀的团队才能走得更远。'
+  },
+  {
+    id: 3, type: 'video', title: '如何挑选高质量的 NAND 芯片',
+    category: 'tutorial', date: '2024-04-01',
+    cover: '', videoUrl: '',
+    body: '本期视频教大家如何从外观、参数、测试等多个维度挑选高质量的 NAND 闪存芯片。'
+  },
+  {
+    id: 4, type: 'article', title: '育儿心得：如何培养孩子的自主学习能力',
+    category: 'life', date: '2024-03-28',
+    cover: '',
+    body: '作为一位母亲，我深知教育的重要性。在 AI 时代，知识的获取变得前所未有的容易，但如何培养孩子自主学习的能力，却是每个家长都需要思考的问题。\n\n## 我的做法\n\n- 给孩子足够的自由探索空间\n- 鼓励提问，而不是急于给答案\n- 以身作则，让孩子看到学习的乐趣'
+  },
+  {
+    id: 5, type: 'video', title: '深圳华强北采购一日游',
+    category: 'vlog', date: '2024-03-10',
+    cover: '', videoUrl: '',
+    body: '带大家一起逛逛深圳华强北，看看电子元器件的采购日常。'
+  },
+  {
+    id: 6, type: 'article', title: 'AI 工具如何改变我的工作方式',
+    category: 'work', date: '2024-04-10',
+    cover: '',
+    body: '从去年开始，我尝试将 AI 工具融入日常工作中。从文案撰写到数据分析，从客户服务到产品设计，AI 正在重塑每一个环节。\n\n## 效率提升最明显的三个场景\n\n1. **市场调研**：AI 可以快速整理行业报告和竞品分析。\n2. **内容创作**：从海报文案到产品描述，AI 都能辅助完成。\n3. **客户沟通**：智能客服和邮件助手节省了大量时间。'
+  }
+];
+
+let currentPage = 'home';
+let currentFilter = 'all';
+let currentTheme = localStorage.getItem('ting_theme') || 'warm';
+let currentFont = localStorage.getItem('ting_font') || 'serif';
+let currentDensity = localStorage.getItem('ting_density') || 'compact';
+let currentCardStyle = localStorage.getItem('ting_cardstyle') || 'book';
+
+// ===== INIT =====
+document.addEventListener('DOMContentLoaded', () => {
+  applyTheme(currentTheme);
+  applyFont(currentFont);
+  applyDensity(currentDensity);
+  applyCardStyle(currentCardStyle);
+  renderAll();
+  updateStats();
+
+  document.getElementById('add-type').addEventListener('change', (e) => {
+    document.getElementById('add-video-url-group').style.display =
+      e.target.value === 'video' ? 'block' : 'none';
+  });
+});
+
+// ===== RENDER =====
+function renderAll() {
+  renderHomeArticles();
+  renderHomeVideos();
+  renderArticlesList();
+  renderVideosGrid();
+}
+
+function renderHomeArticles() {
+  const articles = contents.filter(c => c.type === 'article').slice(0, 4);
+  const el = document.getElementById('home-articles');
+  el.innerHTML = articles.map(c => renderCard(c)).join('');
+}
+
+function renderHomeVideos() {
+  const videos = contents.filter(c => c.type === 'video').slice(0, 4);
+  const el = document.getElementById('home-videos');
+  el.innerHTML = videos.map(c => renderCard(c)).join('');
+}
+
+function renderArticlesList() {
+  let articles = contents.filter(c => c.type === 'article');
+  if (currentFilter !== 'all') {
+    articles = articles.filter(c => c.category === currentFilter);
+  }
+  const el = document.getElementById('articles-list');
+  el.innerHTML = articles.map(c => renderArticleItem(c)).join('');
+}
+
+function renderVideosGrid() {
+  let videos = contents.filter(c => c.type === 'video');
+  if (currentFilter !== 'all') {
+    videos = videos.filter(c => c.category === currentFilter);
+  }
+  const el = document.getElementById('videos-grid');
+  el.innerHTML = videos.map(c => renderCard(c)).join('');
+}
+
+function renderCard(c) {
+  const isVideo = c.type === 'video';
+  const coverContent = c.cover
+    ? `<img src="${c.cover}" alt="${c.title}">`
+    : `<div style="display:flex;align-items:center;justify-content:center;height:100%;padding:20px;"><span class="book-title-text">${c.title}</span></div>`;
+  return `
+    <div class="card animate-in" onclick="openContent(${c.id})">
+      <div class="book-cover">
+        <div class="book-spine"></div>
+        <div class="book-img">${coverContent}</div>
+        <div class="book-badge ${isVideo ? 'video' : ''}">${isVideo ? '▶ 视频' : '阅读'}</div>
+      </div>
+      <div class="card-title">${c.title}</div>
+      <div class="card-meta">${c.date} · ${getCategoryName(c.category)}</div>
+    </div>
+  `;
+}
+
+function renderArticleItem(c) {
+  const cover = c.cover
+    ? `<img src="${c.cover}" alt="${c.title}">`
+    : '';
+  return `
+    <div class="article-item animate-in" onclick="openContent(${c.id})">
+      <div class="article-thumb">${cover}</div>
+      <div class="article-info">
+        <h3>${c.title}</h3>
+        <p>${c.body.substring(0, 80)}...</p>
+        <div class="article-tags">
+          <span class="tag">${getCategoryName(c.category)}</span>
+          <span class="tag">${c.date}</span>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function getCategoryName(cat) {
+  const map = { work: '工作', life: '生活', growth: '成长', tutorial: '教程', vlog: 'Vlog', share: '分享' };
+  return map[cat] || cat;
+}
+
+// ===== NAVIGATION =====
+function showPage(page) {
+  document.querySelectorAll('[id^="page-"]').forEach(el => el.classList.add('hidden'));
+  document.getElementById('page-' + page).classList.remove('hidden');
+  document.querySelectorAll('nav a').forEach(el => el.classList.remove('active'));
+  const nav = document.getElementById('nav-' + (page === 'content' ? 'home' : page));
+  if (nav) nav.classList.add('active');
+  currentPage = page;
+  window.scrollTo(0, 0);
+}
+
+function goBack() {
+  showPage('home');
+}
+
+function openContent(id) {
+  const c = contents.find(x => x.id === id);
+  if (!c) return;
+  document.getElementById('cv-title').textContent = c.title;
+  document.getElementById('cv-date').textContent = c.date;
+  document.getElementById('cv-category').textContent = getCategoryName(c.category);
+  document.getElementById('cv-type').textContent = c.type === 'video' ? '视频' : '文章';
+
+  let bodyHtml = '';
+  if (c.type === 'video') {
+    bodyHtml = `<div class="video-player">▶</div><p style="margin-top:20px;">${c.body}</p>`;
+  } else {
+    bodyHtml = c.body
+      .replace(/## (.*)/g, '<h2>$1</h2>')
+      .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+      .replace(/\n/g, '</p><p>');
+    bodyHtml = '<p>' + bodyHtml + '</p>';
+  }
+  document.getElementById('cv-body').innerHTML = bodyHtml;
+  showPage('content');
+}
+
+function filterContent(cat) {
+  currentFilter = cat;
+  document.querySelectorAll('#page-articles .tab').forEach((t, i) => {
+    t.classList.toggle('active', ['all','work','life','growth'][i] === cat);
+  });
+  renderArticlesList();
+}
+
+function filterVideos(cat) {
+  currentFilter = cat;
+  document.querySelectorAll('#page-videos .tab').forEach((t, i) => {
+    t.classList.toggle('active', ['all','tutorial','vlog','share'][i] === cat);
+  });
+  renderVideosGrid();
+}
+
+// ===== MODAL =====
+function openModal(name) {
+  document.getElementById('modal-' + name).classList.add('show');
+}
+function closeModal(name) {
+  document.getElementById('modal-' + name).classList.remove('show');
+}
+
+// ===== ADD CONTENT =====
+function submitContent() {
+  const type = document.getElementById('add-type').value;
+  const title = document.getElementById('add-title').value.trim();
+  const category = document.getElementById('add-category').value;
+  const cover = document.getElementById('add-cover').value.trim();
+  const body = document.getElementById('add-body').value.trim();
+  const videoUrl = document.getElementById('add-video-url').value.trim();
+
+  if (!title || !body) {
+    alert('请填写标题和内容');
+    return;
+  }
+
+  const newContent = {
+    id: Date.now(), type, title, category,
+    date: new Date().toISOString().split('T')[0],
+    cover, body
+  };
+  if (type === 'video') newContent.videoUrl = videoUrl;
+
+  contents.unshift(newContent);
+  localStorage.setItem('ting_contents', JSON.stringify(contents));
+
+  closeModal('add');
+  document.getElementById('add-title').value = '';
+  document.getElementById('add-body').value = '';
+  document.getElementById('add-cover').value = '';
+  document.getElementById('add-video-url').value = '';
+
+  renderAll();
+  updateStats();
+  showPage('home');
+}
+
+// ===== STATS =====
+function updateStats() {
+  const articles = contents.filter(c => c.type === 'article').length;
+  const videos = contents.filter(c => c.type === 'video').length;
+  const days = Math.floor((Date.now() - new Date('2024-01-01').getTime()) / 86400000);
+  document.getElementById('stat-articles').textContent = articles;
+  document.getElementById('stat-videos').textContent = videos;
+  document.getElementById('stat-days').textContent = days;
+}
+
+// ===== CUSTOMIZE =====
+function setTheme(theme) {
+  currentTheme = theme;
+  localStorage.setItem('ting_theme', theme);
+  applyTheme(theme);
+  document.querySelectorAll('.color-dot').forEach((dot, i) => {
+    dot.classList.toggle('active', ['warm','cool','rose','forest','lavender'][i] === theme);
+  });
+}
+
+function applyTheme(theme) {
+  const root = document.documentElement;
+  const themes = {
+    warm: { bg: '#FAF9F7', text: '#1a2d42', accent: '#C4A77D', accent2: '#8B7355', muted: '#8B7355', border: '#E8E4DF' },
+    cool: { bg: '#F5F7FA', text: '#1a2d42', accent: '#5B8DB8', accent2: '#3D6A8E', muted: '#6B8FA8', border: '#D8E0E8' },
+    rose: { bg: '#FAF5F7', text: '#2d1a2a', accent: '#B88BA0', accent2: '#8B5A6B', muted: '#8B6B7A', border: '#E8D8E0' },
+    forest: { bg: '#F5FAF7', text: '#1a2d1f', accent: '#5A8B6A', accent2: '#3D6B4D', muted: '#6B8B7A', border: '#D8E8DD' },
+    lavender: { bg: '#F7F5FA', text: '#2a1a3d', accent: '#8B7AB8', accent2: '#6B5A8B', muted: '#7A6B8B', border: '#DDD8E8' }
+  };
+  const t = themes[theme];
+  root.style.setProperty('--bg', t.bg);
+  root.style.setProperty('--text', t.text);
+  root.style.setProperty('--accent', t.accent);
+  root.style.setProperty('--accent2', t.accent2);
+  root.style.setProperty('--muted', t.muted);
+  root.style.setProperty('--border', t.border);
+}
+
+function setFont(font) {
+  currentFont = font;
+  localStorage.setItem('ting_font', font);
+  applyFont(font);
+  document.querySelectorAll('.font-option').forEach((opt, i) => {
+    opt.classList.toggle('active', ['serif','sans','mix'][i] === font);
+  });
+}
+
+function applyFont(font) {
+  const root = document.documentElement;
+  if (font === 'serif') {
+    root.style.setProperty('--font-heading', "'Noto Serif SC', Georgia, serif");
+    root.style.setProperty('--font-body', "'Noto Serif SC', Georgia, serif");
+  } else if (font === 'sans') {
+    root.style.setProperty('--font-heading', "'Noto Sans SC', sans-serif");
+    root.style.setProperty('--font-body', "'Noto Sans SC', sans-serif");
+  } else {
+    root.style.setProperty('--font-heading', "'Noto Serif SC', Georgia, serif");
+    root.style.setProperty('--font-body', "'Noto Sans SC', sans-serif");
+  }
+}
+
+function setDensity(density) {
+  currentDensity = density;
+  localStorage.setItem('ting_density', density);
+  applyDensity(density);
+  document.querySelectorAll('.layout-option').forEach((opt, i) => {
+    if (opt.parentElement.querySelector('h4').textContent === '排版密度') {
+      opt.classList.toggle('active', ['compact','normal','loose'][i] === density);
+    }
+  });
+}
+
+function applyDensity(density) {
+  const root = document.documentElement;
+  const main = document.querySelector('main');
+  if (density === 'compact') {
+    main.style.padding = '20px 20px 40px';
+  } else if (density === 'normal') {
+    main.style.padding = '30px 20px 60px';
+  } else {
+    main.style.padding = '40px 20px 80px';
+  }
+}
+
+function setCardStyle(style) {
+  currentCardStyle = style;
+  localStorage.setItem('ting_cardstyle', style);
+  applyCardStyle(style);
+  // Update UI
+  const sections = document.querySelectorAll('.customize-section');
+  sections.forEach(s => {
+    if (s.querySelector('h4').textContent === '卡片样式') {
+      s.querySelectorAll('.layout-option').forEach((opt, i) => {
+        opt.classList.toggle('active', ['book','card','minimal'][i] === style);
+      });
+    }
+  });
+}
+
+function applyCardStyle(style) {
+  const styleEl = document.getElementById('dynamic-card-style');
+  if (styleEl) styleEl.remove();
+
+  const css = document.createElement('style');
+  css.id = 'dynamic-card-style';
+
+  if (style === 'card') {
+    css.textContent = `
+      .book-cover { aspect-ratio: 16/10; border-radius: 12px; }
+      .book-spine { display: none; }
+      .book-img { left: 0; border-radius: 12px; }
+    `;
+  } else if (style === 'minimal') {
+    css.textContent = `
+      .book-cover { aspect-ratio: 16/10; border-radius: 8px; box-shadow: none; border: 1px solid var(--border); }
+      .book-spine { display: none; }
+      .book-img { left: 0; border-radius: 8px; background: var(--bg); }
+      .card:hover .book-cover { box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+    `;
+  }
+  document.head.appendChild(css);
+}
+
+// Close modal on overlay click
+document.querySelectorAll('.modal-overlay').forEach(overlay => {
+  overlay.addEventListener('click', (e) => {
+    if (e.target === overlay) overlay.classList.remove('show');
+  });
+});
+</script>
+
+</body>
+</html>
