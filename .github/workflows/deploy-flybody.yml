@@ -1,0 +1,40 @@
+name: Deploy Flybody Lab
+on:
+  push:
+    paths:
+      - "flybody-lab/**"
+      - ".github/workflows/deploy-flybody.yml"
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+concurrency:
+  group: pages
+  cancel-in-progress: true
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Fetch official Flybody geometry
+        run: |
+          mkdir -p _site/flybody-lab/assets
+          curl -L https://github.com/TuragaLab/flybody/archive/refs/heads/main.zip -o /tmp/flybody.zip
+          unzip -q /tmp/flybody.zip -d /tmp
+          cp -R /tmp/flybody-main/flybody/fruitfly/assets/. _site/flybody-lab/assets/
+          cp flybody-lab/index.html _site/flybody-lab/index.html
+          cp flybody-lab/README.md _site/flybody-lab/README.md
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
